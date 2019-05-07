@@ -32,6 +32,13 @@
     "sanitize": "^2.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "eslint": "^5.16.0",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.17.0"
+  },
+  "prettier": {
+    "semi": false,
+    "tabs": true,
+    "quote": true
   }
 }
