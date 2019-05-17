@@ -14,6 +14,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// routes
 app.use('/contact', contactRouter)
+app.use('*', (req, res) =>{
+    res.status(404).send('404 - This page was not found. Please check your url/link and try again.')
+})
 
 module.exports = app
