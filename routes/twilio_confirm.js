@@ -7,7 +7,6 @@ const util = require('util')
 router.post('/', (req, res) => {
     // lets try to get the contact number from the reply
     let contactID = parseInt(req.body.Body)
-    console.log(req.body.Body)
     if (isNaN(contactID)) {
         console.error('Unable to find contactID from sms reply to twilio')
         return

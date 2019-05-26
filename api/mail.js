@@ -12,7 +12,6 @@ const acknowledgeContact = (contactID) => {
         let q = 'UPDATE contacts SET acknowledged = true WHERE id = $1'
         pool.query(q, [contactID], (err) => {
             if (err) {
-                console.log(err)
                 reject(err)
             }
             resolve()
