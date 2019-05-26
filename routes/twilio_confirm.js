@@ -5,7 +5,7 @@ const router = express.Router()
 
 /* POST contact call. */
 router.post('/', (req, res) => {
-    console.log(JSON.stringify(req))
+    console.log(req)
     return res.status(200).send('{"status": "ok"}')
     //res.setHeader('Content-Type', 'application/json')
     /*
