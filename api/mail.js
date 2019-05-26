@@ -9,7 +9,7 @@ const acknowledgeContact = (contactID) => {
         if (isNaN(contactID)) {
             return reject('Not a number')
         }
-        let q = 'UPDATE contacts SET acknowledged = true WHERE id = ?'
+        let q = 'UPDATE contacts SET acknowledged = true WHERE id = $1'
         pool.query(q, [contactID], (err) => {
             if (err) {
                 console.log(err)
