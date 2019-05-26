@@ -15,11 +15,10 @@ router.post('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     mail.acknowledgeContact(contactID)
         .then(()=>{
-            console.log('success')
-            return res.status(200).send('{"status": "ok"}')
+            //return res.status(200).send('{"status": "ok"}')
+            return 
         })
         .catch((e) => {
-            console.log('failure', e)
             return res.status(500).send(util.format('{"status": "%s"}', e.message))
         })
 })
