@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
 const contactRouter = require('./routes/contact')
+const twilioConfirm = require('./routes/twilioConfirm')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // routes
 app.use('/contact', contactRouter)
+app.use('/twilio_confirm', twilioConfirm)
 app.use('*', (req, res) =>{
     res.status(404).send('404 - This page was not found. Please check your url/link and try again.')
 })
