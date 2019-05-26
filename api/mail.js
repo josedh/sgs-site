@@ -3,6 +3,23 @@ const pool = new pg.Pool()
 const util = require('util')
 const request = require('request')
 
+const acknowledgeContact = (contactID) => {
+    return new Promise((resolve, reject) => {
+        // some sanitation, we only accept digits, so this is sufficient
+        if (isNaN(contactID)) {
+            return reject('Not a number')
+        }
+        let q = 'UPDATE contacts SET acknowledged = true WHERE id = ?'
+        pool.query(q, contactID, (err) => {
+            if (err) {
+                console.log(err)
+                reject(err)
+            }
+            resolve()
+        })
+    })
+}
+
 const addContact = (contact) => {
     return new Promise((resolve, reject) => {
         let t = new Date()
@@ -39,7 +56,6 @@ function saveToPostgres(safe, createdts, updatedts) {
         let params = [safe.name, safe.email, safe.phone, safe.message, safe.score, false, createdts, updatedts]
         pool.query(q,params, (err)=>{
             if (err) {
-                console.log(err)
                 return reject(err)
             }
             return resolve()
@@ -49,4 +65,5 @@ function saveToPostgres(safe, createdts, updatedts) {
 
 module.exports = {
     addContact,
+    acknowledgeContact,
 }
