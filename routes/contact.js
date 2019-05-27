@@ -7,11 +7,13 @@ const util = require('util')
 router.post('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     mail.addContact(req)
-        .then(()=>{
+        .then(() => {
             return res.status(200).send('{"status": "ok"}')
         })
-        .catch((e) => {
-            return res.status(500).send(util.format('{"status": "%s"}', e.message))
+        .catch(e => {
+            return res
+                .status(500)
+                .send(util.format('{"status": "%s"}', e.message))
         })
 })
 

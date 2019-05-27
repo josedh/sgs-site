@@ -14,11 +14,13 @@ router.post('/', (req, res) => {
 
     res.setHeader('Content-Type', 'application/json')
     mail.acknowledgeContact(contactID)
-        .then(()=>{
-            return 
+        .then(() => {
+            return
         })
-        .catch((e) => {
-            return res.status(500).send(util.format('{"status": "%s"}', e.message))
+        .catch(e => {
+            return res
+                .status(500)
+                .send(util.format('{"status": "%s"}', e.message))
         })
 })
 
