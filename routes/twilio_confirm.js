@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const mail = require('../api/mail')
 const util = require('util')
+const mail = require('../api/mail')
+const texter = require('../services/texter')
 
 /* POST contact call. */
 router.post('/', (req, res) => {
@@ -15,7 +16,19 @@ router.post('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     mail.acknowledgeContact(contactID)
         .then(() => {
-            return
+            texter
+                .textPOC(
+                    'Thank you for acknowledging. You will no longer be notified about this contact.'
+                )
+                .then(() => {
+                    return
+                })
+                .catch(e => {
+                    console.error(e)
+                    return res
+                        .status(500)
+                        .send(util.format('{"status": "%s"}', e.message))
+                })
         })
         .catch(e => {
             console.error(e)
