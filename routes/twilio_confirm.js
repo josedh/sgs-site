@@ -18,6 +18,7 @@ router.post('/', (req, res) => {
             return
         })
         .catch(e => {
+            console.error(e)
             return res
                 .status(500)
                 .send(util.format('{"status": "%s"}', e.message))

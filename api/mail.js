@@ -1,5 +1,8 @@
 const pg = require('pg')
-const pool = new pg.Pool(process.env.DATABASE_URL)
+const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+})
 const util = require('util')
 const request = require('request')
 
@@ -65,7 +68,7 @@ const addContact = contact => {
 function saveToPostgres(safe, createdts, updatedts) {
     return new Promise((resolve, reject) => {
         let q = util.format(
-            'INSERT INTO %s(name, email, phone, message, captcha_score, acknowledged, created_on, updated_on) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
+            'INSERT INTO %s (name, email, phone, message, captcha_score, acknowledged, created_on, updated_on) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
             process.env.PG_CONTACTS_TABLE
         )
         let params = [
@@ -80,6 +83,7 @@ function saveToPostgres(safe, createdts, updatedts) {
         ]
         pool.query(q, params, err => {
             if (err) {
+                console.log('err', err)
                 return reject(err)
             }
             return resolve()
