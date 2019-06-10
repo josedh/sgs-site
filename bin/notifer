@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+/*
+ * Job to notify twilio verified number of new contacts on sgs.com
+ */
+
+const { Pool } = require('pg')
+const util = require('util')
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: true })
+const twilio = require('twilio')
+const twilioClient = twilio(
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
+)
+
+let wait = process.env.WAIT_INTERVAL
+const q = `SELECT name, phone, email, message
+           FROM %s
+           WHERE acknowledged = false`
+
+function poll() {
+    pool.query(util.format(q, 'contacts'), async (err, res) => {
+        if (err) {
+            console.error('Failed to query postgres:', err)
+            return
+        }
+        for (let i = 0; i < res.rows.length; i++) {
+            notify(res.rows[i])
+            await sleep(wait)
+        }
+        console.log('Notification loop done.')
+    })
+    return
+}
+
+function notify(contact) {
+    return new Promise((resolve, reject) => {
+        twilioClient.messages
+            .create({
+                body: util.format(
+                    '\nNew message received from %s.\nPhone number: \'%s\'\nEmail: \'%s\',\nMessage: \'%s\'. Please reply \'%s\', to stop getting reminders about this contact.',
+                    contact.name,
+                    contact.phone,
+                    contact.email,
+                    contact.message
+                ),
+                to: process.env.TWILIO_TO_NUMBER,
+                from: process.env.TWILIO_FROM_NUMBER
+            })
+            .then(() => {
+                console.log('Notification about', contact.name, 'sent')
+                return resolve()
+            })
+            .catch(err => {
+                return reject(err)
+            })
+    })
+}
+
+function sleep(t) {
+    return new Promise(resolve => {
+        setTimeout(resolve, t)
+    })
+}
+
+// Fire
+poll()

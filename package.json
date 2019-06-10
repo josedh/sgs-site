@@ -1,0 +1,40 @@
+{
+  "name": "sgs-site",
+  "version": "0.0.1",
+  "private": true,
+  "description": "seamlessgutterservices.com nodejs based site",
+  "main": "app.js",
+  "scripts": {
+    "start": "bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josedh/sgs-site.git"
+  },
+  "keywords": [
+    "sgs",
+    "seamlessgutterservices",
+    "nodejs"
+  ],
+  "author": "Jose De La O",
+  "license": "SEE LICENSE IN license.txt",
+  "bugs": {
+    "url": "https://github.com/josedh/sgs-site/issues"
+  },
+  "homepage": "https://github.com/josedh/sgs-site#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.9.0",
+    "request": "^2.88.0",
+    "sanitize": "^2.1.0",
+    "twilio": "^3.31.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "prettier": "^1.17.0"
+  }
+}
